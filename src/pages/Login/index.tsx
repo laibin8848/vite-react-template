@@ -48,7 +48,7 @@ const Login: FC<ILogin> = ({history}: ILogin) => {
   return (
     <div className={classNames(style['login'], 'flex-all-center')}>
       <div className={classNames(style['login__form'], 'flex-all-center')}>
-        <span className={style['login__form__title']}>React Admin</span>
+        <span className={style['login__form__title']}>Vite React Template</span>
         <Form
           {...layout}
           name="basic"
