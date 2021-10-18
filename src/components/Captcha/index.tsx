@@ -8,7 +8,7 @@ interface ICaptcha {
 const Captcha: React.FC<ICaptcha> = ({
   captchaReady
 }: ICaptcha) => {
-  const [captcha, setCaptcha] = useState(0)
+  const [captcha, setCaptcha] = useState('')
 
   const getCaptcha = () => {
     common.captcha().then(res=> {

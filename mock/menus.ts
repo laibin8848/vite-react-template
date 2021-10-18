@@ -31,6 +31,7 @@ const getMenus = (roleType: string, lng: string) => {
     }
   }
 
+  debugger
   return result
 }
 

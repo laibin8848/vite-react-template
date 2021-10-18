@@ -6,8 +6,7 @@ export class LoginStore {
   userInfo: UserInfoType = {
     roleType: 0,
     userName: '',
-    avatar: '',
-    token: ''
+    avatar: ''
   }
 
   lng = 'cn'
@@ -21,9 +20,9 @@ export class LoginStore {
     return this.userInfo
   }
 
-  toggleLogin(flag: boolean,info={}) {
+  toggleLogin(flag: boolean, token: string) {
     if (flag) {
-      authenticateSuccess(this.userInfo.token)
+      authenticateSuccess(token)
       this.isLogin = true
     } else {
       logout()
@@ -31,8 +30,7 @@ export class LoginStore {
       this.setUserInfo({
         userName: '',
         avatar: '',
-        roleType: 0,
-        token: ''
+        roleType: 0
       })
     }
 

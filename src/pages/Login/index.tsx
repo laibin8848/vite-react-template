@@ -1,5 +1,5 @@
 import React, { memo, FC } from "react";
-import { Form, Input, Button, Checkbox, message } from "antd";
+import { Form, Input, Button, Checkbox } from "antd";
 import classNames from "classnames";
 import { home } from "services";
 import { useStore } from 'stores'
@@ -12,7 +12,7 @@ const layout = {
 };
 
 const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
+  wrapperCol: { offset: 6, span: 18 },
 };
 
 interface ILogin {
@@ -35,10 +35,9 @@ const Login: FC<ILogin> = ({history}: ILogin) => {
     await loginStore.setUserInfo({
       roleType: 0,
       username,
-      avatar,
-      token
+      avatar
     });
-    await loginStore.toggleLogin(true, {token})
+    await loginStore.toggleLogin(true, token)
     await history.push('/dashboard');
   };
 
