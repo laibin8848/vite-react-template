@@ -1,4 +1,4 @@
-import { HomeAPI } from './request';
+import { RequestService } from './request';
 import {
   isAuthenticated,
   authenticateSuccess,
@@ -7,7 +7,7 @@ import {
 import i18n from './i18n';
 
 export {
-  HomeAPI,
+  RequestService,
   isAuthenticated,
   authenticateSuccess,
   logout,

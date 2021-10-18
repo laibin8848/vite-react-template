@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "react admin 后台管理系统模板",
   "scripts": {
-    "dev": "cross-env vite",
+    "dev": "cross-env vite --mode dev",
     "build": "rimraf dist && cross-env tsc && vite build",
     "serve": "vite preview",
     "lint:script": "eslint -c .eslintrc.js 'src/**/*.ts' 'src/**/*.tsx' --cache --fix",

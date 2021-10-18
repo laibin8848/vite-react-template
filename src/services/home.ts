@@ -1,29 +1,25 @@
 import {
   AxiosRequestConfig
 } from 'axios';
-import { HomeAPI as API } from 'utils';
+import { RequestService } from 'utils';
 import { getMenus, getUsers } from '../../mock/index';
-const isProd = process.env.NODE_ENV === 'production';
+const isMock = process.env.NODE_ENV === 'test';
 
 const login = async (config: AxiosRequestConfig & {
-  userName: string,
+  username: string,
   passWord: string,
   remember: boolean
 }): Promise<any> => {
-  return getUsers(config.userName.trim(), config.passWord.trim(), config.remember)
-  // return isProd
-  //     ? getUsers(config.userName, config.passWord, config.remember)
-  //     : API && API.post('/login', { ...config })
-  }
+  return isMock
+      ? getUsers(config.username.trim(), config.passWord.trim(), config.remember)
+      : RequestService.post('/admin-backend/login', { ...config })
+}
 
 const menus = async (config: AxiosRequestConfig): Promise<any> => {
-  return getMenus(
-    `${config.params.roleType}`,
-    `${config.params.lng}`
-  )
-  // return isProd
-  //     ? getMenus(`${config.params.roleType}`)
-  //     : API && API.get('/menus', { ...config })
+  return getMenus(`${config.params.roleType}`, `${config.params.lng}`)
+  // return isMock
+  //     ? getMenus(`${config.params.roleType}`, `${config.params.lng}`)
+  //     : RequestService.get('/menus', { ...config })
 }
 
 const home: {

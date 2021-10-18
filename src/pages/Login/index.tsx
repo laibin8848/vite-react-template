@@ -4,10 +4,11 @@ import classNames from "classnames";
 import { home } from "services";
 import { useStore } from 'stores'
 import style from './index.module.less';
+import Captcha from "components/Captcha";
 
 const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
+  labelCol: { span: 6 },
+  wrapperCol: { span: 18 },
 };
 
 const tailLayout = {
@@ -19,60 +20,79 @@ interface ILogin {
 }
 
 const Login: FC<ILogin> = ({history}: ILogin) => {
-
   const { loginStore } = useStore()
+  const [form] = Form.useForm();
+
   const onFinish = async (values: {
-    userName: string,
-    passWord: string,
-    remember: boolean
+    username: string,
+    password: string,
+    remember: boolean,
+    checkKey: string
   }) => {
     const data = await home.login(values)
-    if (data.ret === '0') {
-      const { roleType, userName, avatar } = data.data
-      await loginStore.setUserInfo({
-        roleType,
-        userName,
-        avatar
-      });
-      await loginStore.toggleLogin(true, {userName})
-      await history.push('/dashboard');
-    } else {
-      message.error(`${data.msg}, 用户名和密码不符`)
-    }
+    const { token } = data.data
+    const { username, avatar } = data.data.userInfo
+    await loginStore.setUserInfo({
+      roleType: 0,
+      username,
+      avatar,
+      token
+    });
+    await loginStore.toggleLogin(true, {token})
+    await history.push('/dashboard');
   };
 
   const onFinishFailed = (errorInfo: unknown) => {
     console.log("Failed:", errorInfo);
   };
 
+  const setCheckKey = (value: string)=> {
+    form.setFieldsValue({checkKey: value})
+  };
+
   return (
     <div className={classNames(style['login'], 'flex-all-center')}>
       <div className={classNames(style['login__form'], 'flex-all-center')}>
-        <span className={style['login__form__title']}>Vite React Template</span>
+        <span className={style['login__form__title']}>欢迎登录</span>
         <Form
           {...layout}
           name="basic"
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
+          form={form}
           className={style['login__form__form']}
         >
+          <Form.Item style={{display: 'none'}} name="checkKey" />
+
           <Form.Item
             label="用户名"
-            name="userName"
+            name="username"
             labelAlign="left"
             rules={[{ required: true, message: "请输入用户名!" }]}
           >
-            <Input placeholder="管理admin,运营zenquan"/>
+            <Input placeholder="admin"/>
           </Form.Item>
 
           <Form.Item
             label="密码"
-            name="passWord"
+            name="password"
             labelAlign="left"
             rules={[{ required: true, message: "请输入密码!" }]}
           >
-            <Input.Password placeholder="管理admin,运营zenquan"/>
+            <Input.Password placeholder="admin"/>
+          </Form.Item>
+
+          <Form.Item
+            label="验证码"
+            name="captcha"
+            labelAlign="left"
+            rules={[{ required: true, message: "请输入验证码!" }]}
+          >
+            <div style={{display: 'flex'}}>
+              <Input />
+              <Captcha captchaReady={setCheckKey}/>
+            </div>
           </Form.Item>
 
           <Form.Item {...tailLayout} name="remember"

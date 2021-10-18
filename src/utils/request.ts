@@ -4,6 +4,7 @@ import axios, {
   AxiosResponse,
   AxiosError
 } from 'axios';
+import { message } from "antd";
 
 export interface IAPI {
   getInstance(): AxiosInstance | null;
@@ -27,7 +28,12 @@ export default class API implements IAPI {
       // @todo
       const {status, data} = res
       if (status === 200) {
-        return data
+        if(data.code === 'E000') {
+          return data
+        } else {
+          message.error(data.message || '请求错误！');
+          return Promise.reject(data.message);
+        }
       }
     }, (err: AxiosError) => {
       return Promise.reject(err);
@@ -48,7 +54,6 @@ export const mainAPI = new API({
   baseURL: `//${document.domain}/app`
 }).getInstance();
 
-
-export const HomeAPI = new API({
-  baseURL: '/api',
+export const RequestService = new API({
+  baseURL: '',
 }).getInstance();

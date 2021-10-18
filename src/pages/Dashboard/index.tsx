@@ -5,7 +5,7 @@ const Dashboard = () => {
   const { t } = useChangeLang();
 
   return (
-    <div style={{fontSize: 28}}>
+    <div>
       {t('greet')}
     </div>
   )
