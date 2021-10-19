@@ -45,7 +45,6 @@ const Home: FC<IHome> = ({history}: IHome) => {
   }
 
   const getMenus = async (roleType: number, lng: string) => {
-    debugger
     const data = await home.menus({params: { roleType, lng }});
     console.log('data>>>', data);
     if (data.ret === '0') {
