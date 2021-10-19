@@ -6,6 +6,7 @@ import axios, {
 } from 'axios';
 import { message } from "antd";
 import { isAuthenticated } from 'utils';
+// import { useStore } from 'stores';
 
 export interface IAPI {
   getInstance(): AxiosInstance | null;
@@ -33,7 +34,10 @@ export default class API implements IAPI {
           return data
         } else {
           //todo 过期处理
-          // if(data.code == '')
+          if(data.code === 'E401') {
+            // const { loginStore } = useStore()
+            // loginStore.toggleLogin(false);
+          }
           message.error(data.message || '请求错误！');
           return Promise.reject(data.message);
         }
