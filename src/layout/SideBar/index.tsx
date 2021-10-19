@@ -16,13 +16,15 @@ const { SubMenu } = Menu;
 interface ISlideBar {
   history: any;
   menus: Array<CompItemType>;
+  permissions?: Array<string>;
   collapsed: boolean;
 }
 
 const SlideBar: FC<ISlideBar> = ({
   history,
   menus,
-  collapsed
+  collapsed,
+  permissions
 }: ISlideBar) => {
   const [openKeys, setOpenKeys] = useState<string[]>([])
   const [selectedKeys, setSelectedKeys] = useState<string[]>(['dashboard'])
@@ -79,12 +81,20 @@ const SlideBar: FC<ISlideBar> = ({
           {
             menus && menus.map((menu: CompItemType) => {
               const {component, key, path, sub, icon} = menu
+              {
+                if(!permissions?.includes(key)) {
+                  return
+                }
+              }
               return (
                 sub && sub.length
                   ? <SubMenu key={key} icon={icon && renderIcon(icon)} title={component}>
                     {
                       sub && sub.map(((s: CompItemType) => {
                         const {component, path, key} = s
+                        if(!permissions?.includes(key)) {
+                          return
+                        }
                         return (<Menu.Item key={key}
                                   onClick={e => selectMenuItem(path)}>
                                 {component}

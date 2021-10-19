@@ -1,7 +1,7 @@
 const LOGIN_COOKIE_NAME = 'sessionId'
 
 export function isAuthenticated () {
-  return _getCookie(LOGIN_COOKIE_NAME)
+  return _getCookie('sessionId')
 }
 
 export function authenticateSuccess (token: string) {

@@ -1,7 +1,8 @@
 import CN_MENUS from './lang/cn.json';
 import EN_MENUS from './lang/en.json';
 
-const getMenus = (roleType: string, lng: string) => {
+const getMenus = () => {
+  const lng = 'cn'
   let result: {
     ret: string,
     msg: string

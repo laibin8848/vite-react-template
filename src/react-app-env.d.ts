@@ -37,5 +37,7 @@ declare type CompItemType = {
 declare type UserInfoType = {
   roleType: number,
   userName: string,
-  avatar: string
+  avatar: string,
+  userId: number,
+  permissions: string[]
 }

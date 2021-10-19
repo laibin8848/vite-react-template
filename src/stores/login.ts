@@ -4,9 +4,11 @@ import { isAuthenticated,authenticateSuccess, logout } from 'utils'
 export class LoginStore {
   isLogin = !!isAuthenticated()
   userInfo: UserInfoType = {
+    userId: 0,
     roleType: 0,
     userName: '',
-    avatar: ''
+    avatar: '',
+    permissions: []
   }
 
   lng = 'cn'
@@ -28,9 +30,11 @@ export class LoginStore {
       logout()
       this.isLogin = false
       this.setUserInfo({
+        userId: 0,
         userName: '',
         avatar: '',
-        roleType: 0
+        roleType: 0,
+        permissions: []
       })
     }
 

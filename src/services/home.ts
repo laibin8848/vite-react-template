@@ -16,10 +16,9 @@ const login = async (config: AxiosRequestConfig & {
 }
 
 const menus = async (config: AxiosRequestConfig): Promise<any> => {
-  return getMenus(`${config.params.roleType}`, `${config.params.lng}`)
-  // return isMock
-  //     ? getMenus(`${config.params.roleType}`, `${config.params.lng}`)
-  //     : RequestService.get('/menus', { ...config })
+  return isMock
+      ? getMenus()
+      : RequestService.get(`/admin-backend/sys/user/getById/${config.params.userId}`)
 }
 
 const home: {

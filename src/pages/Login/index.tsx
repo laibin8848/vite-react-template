@@ -31,11 +31,13 @@ const Login: FC<ILogin> = ({history}: ILogin) => {
   }) => {
     const data = await home.login(values)
     const { token } = data.data
-    const { username, avatar } = data.data.userInfo
+    const { username, avatar, userId } = data.data.userInfo
     await loginStore.setUserInfo({
+      userId,
       roleType: 0,
       username,
-      avatar
+      avatar,
+      permissions: []
     });
     await loginStore.toggleLogin(true, token)
     await history.push('/dashboard');

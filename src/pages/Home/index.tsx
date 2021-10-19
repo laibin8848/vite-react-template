@@ -15,6 +15,7 @@ import AppRouter from 'components/Router';
 import SideBar from 'layout/SideBar'
 import Footer from 'layout/Footer'
 import { useChangeLang } from 'hooks';
+import { baseMenus } from 'components/Router/baseMenus';
 
 const { Header, Content } = Layout;
 interface IHome {
@@ -24,11 +25,12 @@ interface IHome {
 const Home: FC<IHome> = ({history}: IHome) => {
   const [collapsed, setCollapsed] = useState(false)
   const [userInfo, setUserInfo] = useState<UserInfoType>({
+    userId: 0,
     avatar: '',
     userName: '',
-    roleType: 0
+    roleType: 0,
+    permissions: []
   })
-  const [menus, setMenus] = useState<Array<CompItemType> | null>(null)
   const [selectedIndex, setSelectedIndex] = useState<number>(1)
   const { loginStore } = useStore()
   const { changeLanguage } = useChangeLang();
@@ -37,21 +39,18 @@ const Home: FC<IHome> = ({history}: IHome) => {
     setCollapsed(!collapsed);
   };
 
-  const initUserInfo = (fn: Function, lng: string) => {
+  const initUserInfo = async () => {
     const userInfoStorage = localStorage.getItem('userInfo');
     const userInfo = userInfoStorage ? JSON.parse(userInfoStorage) : loginStore.getUserInfo();
-    setUserInfo(userInfo)
-    userInfo.roleType && fn && fn(userInfo.roleType, lng)
+    const { userId } = userInfo
+    const res = await home.menus({params: { userId }});
+    const permissions: string[] = ['homeRoot'];
+    res.data.userMenus.map((item: any)=> permissions.push(item.menuCode));
+    userInfo.permissions = permissions;
+    setUserInfo(userInfo);
+    loginStore.setUserInfo(userInfo);
   }
 
-  const getMenus = async (roleType: number, lng: string) => {
-    const data = await home.menus({params: { roleType, lng }});
-    console.log('data>>>', data);
-    if (data.ret === '0') {
-      const {menus} = data.data
-      setMenus(menus)
-    }
-  }
 
   const notLogin = (
     <div>
@@ -151,20 +150,17 @@ const Home: FC<IHome> = ({history}: IHome) => {
   )
 
   useEffect(() => {
-    const lng = localStorage.getItem('i18nextLng') || loginStore.lng
-    loginStore.setLng(lng)
-    initUserInfo(getMenus, lng);
-    setSelectedIndex(lng === 'cn' ? 1 : 2)
-  }, [loginStore.lng])
+    initUserInfo()
+  }, [])
 
   return (
     <Layout>
       {
-        menus &&
-          <SideBar menus={menus}
-            collapsed={collapsed}
-            history={history}
-          />
+        <SideBar menus={baseMenus}
+          permissions={userInfo.permissions}
+          collapsed={collapsed}
+          history={history}
+        />
       }
       <Layout className={style["site-layout"]}>
           {renderContent()}

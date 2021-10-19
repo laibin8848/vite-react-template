@@ -5,6 +5,7 @@ import axios, {
   AxiosError
 } from 'axios';
 import { message } from "antd";
+import { isAuthenticated } from 'utils';
 
 export interface IAPI {
   getInstance(): AxiosInstance | null;
@@ -56,4 +57,7 @@ export const mainAPI = new API({
 
 export const RequestService = new API({
   baseURL: '',
+  headers: {
+    'x-access-token': isAuthenticated()
+  }
 }).getInstance();
