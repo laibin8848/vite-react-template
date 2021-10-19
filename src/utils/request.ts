@@ -32,6 +32,8 @@ export default class API implements IAPI {
         if(data.code === 'E000') {
           return data
         } else {
+          //todo 过期处理
+          // if(data.code == '')
           message.error(data.message || '请求错误！');
           return Promise.reject(data.message);
         }
