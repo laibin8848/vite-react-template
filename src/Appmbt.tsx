@@ -1,23 +1,10 @@
-import React, { FC } from 'react';
-import { useStore } from './stores/user';
-import { Observer } from 'mobx-react';
+import React, { FC, memo } from 'react';
 
 const Appmbt: FC = () => {
   console.log('Appmbt cal')
-
-  const userStore = useStore()
   return (
-    <Observer>
-      {
-        ()=> {
-          console.log('Appmbt Observer cal')
-          return (
-            <div>Appmbt:{userStore.count}</div>
-          )
-        }
-      }
-    </Observer>
+    <div>Appmbt:xxxx</div>
   );
 };
 
-export default Appmbt;
+export default memo(Appmbt);

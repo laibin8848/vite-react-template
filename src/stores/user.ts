@@ -1,5 +1,5 @@
 import { observable } from "mobx";
-import { createContext, useContext } from 'react'
+import { createContext, useContext } from 'react';
 
 const userInfo: UserInfoType = {
   userId: 0,
@@ -11,7 +11,9 @@ const userInfo: UserInfoType = {
 
 export const store = observable(userInfo)
 
-export const StoreContext = createContext(store)
+export const StoreContext = createContext({
+  roleType: 0
+})
 
 export const useStore = () => {
   return useContext(StoreContext)
