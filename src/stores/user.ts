@@ -11,7 +11,9 @@ const userInfo: UserInfoType = {
 
 export const store = observable(userInfo)
 
-export const StoreContext = createContext(userInfo)
+export const StoreContext = createContext({
+  roleType: 0
+})
 
 export const useStore = () => {
   return useContext(StoreContext)
