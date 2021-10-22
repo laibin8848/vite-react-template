@@ -25,6 +25,7 @@ declare module '*.gif';
 declare module '*.bmp';
 declare module '*.tiff';
 declare module '*.less';
+declare module 'libs/*';
 
 declare type CompItemType = {
   component: string,

@@ -23,20 +23,15 @@ export default function createStore(params) {
     isDev: false,
     reducer: reducerInAction,
     initialState: {},
-    middleware: params.isDev ? [middlewareLog] : undefined,
+    middleware: params.isDev ? [middlewareLog] : [],
     ...params,
   };
-  const AppContext = React.createContext();
+  const AppContext = params.context;
+
   const store = {
     isDev,
     _state: initialState,
-    useContext: function() {
-      return React.useContext(AppContext);
-    },
     dispatch: undefined,
-    getState: function() {
-      return store._state;
-    },
     initialState,
   };
   let isCheckedMiddleware = false;

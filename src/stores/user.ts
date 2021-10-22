@@ -1,20 +1,18 @@
-import { observable } from "mobx";
 import { createContext, useContext } from 'react';
+import miniRedux from 'libs/mini-redux';
+const UserContext = createContext();
 
-const userInfo: UserInfoType = {
-  userId: 0,
-  userName: '',
-  avatar: '',
-  roleType: 0,
-  permissions: []
+const { Provider} = miniRedux({
+  isDev: false,
+  initialState: {},
+  context: UserContext
+});
+
+export const useUserStore = () => {
+  return useContext(UserContext);
 }
 
-export const store = observable(userInfo)
-
-export const StoreContext = createContext({
-  roleType: 0
-})
-
-export const useStore = () => {
-  return useContext(StoreContext)
+export default {
+  userProvider: Provider,
+  useUserStore
 }
