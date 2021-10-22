@@ -1,27 +1,23 @@
-import { createContext, useContext } from 'react'
-import { create } from 'mobx-persist'
-import loginStore, { LoginStore } from './login'
+import { createContext, useContext } from 'react';
+import miniRedux from 'libs/mini-redux';
+const appStoreContext = createContext();
 
-const hydrate = create({
-  storage: localStorage,
-  jsonify: true
-})
+const Storer = miniRedux({
+  isDev: false,
+  initialState: {
+    userInfo: {
+      userId: 0,
+      userName: 'default',
+      avatar: ''
+    },
+    permissions: [],
+    lang: 'cn'
+  },
+  context: appStoreContext
+});
 
-interface IStore {
-  loginStore: LoginStore
-}
-class Store implements IStore {
-  public loginStore: LoginStore
-  constructor() {
-    this.loginStore = loginStore
-    hydrate('userInfo', this.loginStore)
-  }
-}
+export const Provider = Storer.Provider;
 
-export const store =  new Store()
-
-export const StoreContext = createContext(store)
-
-export const useStore = () => {
-  return useContext(StoreContext)
+export const useAppStore = () => {
+  return useContext(appStoreContext);
 }

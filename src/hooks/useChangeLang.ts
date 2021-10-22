@@ -4,9 +4,9 @@ import { message } from 'antd';
 const useChangeLang = () => {
   const { t, i18n } = useTranslation();
 
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-    message.success(t('lng.changeLangSuccess'))
+  const changeLanguage = (lang: string) => {
+    i18n.changeLanguage(lang);
+    message.success(t('lang.changeLangSuccess'))
   };
 
   return {

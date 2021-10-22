@@ -12,7 +12,7 @@ export default defineConfig({
     alias: {
       '@': resolve('src'),
       'libs': resolve('src/libs'),
-      'models': resolve('src/models'),
+      'reducer': resolve('src/reducer'),
       'pages': resolve('src/pages'),
       'utils': resolve('src/utils'),
       'services': resolve('src/services'),

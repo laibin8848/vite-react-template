@@ -26,6 +26,7 @@ declare module '*.bmp';
 declare module '*.tiff';
 declare module '*.less';
 declare module 'libs/*';
+declare module 'reducer/*';
 
 declare type CompItemType = {
   component: string,
@@ -40,5 +41,13 @@ declare type UserInfoType = {
   userName: string,
   avatar: string,
   userId: number,
-  permissions: string[]
+  token?: ''
+}
+
+declare type IStore = {
+  userInfo: UserInfoType
+}
+
+declare type IKeyString = {
+  [key: string]: any
 }

@@ -1,18 +1,18 @@
 import { createContext, useContext } from 'react';
 import miniRedux from 'libs/mini-redux';
-const UserContext = createContext();
+const appStoreContext = createContext();
 
-const { Provider} = miniRedux({
+const { Provider } = miniRedux({
   isDev: false,
   initialState: {},
-  context: UserContext
+  context: appStoreContext
 });
 
-export const useUserStore = () => {
-  return useContext(UserContext);
+export const useAppStore = () => {
+  return useContext(appStoreContext);
 }
 
 export default {
-  userProvider: Provider,
-  useUserStore
+  Provider,
+  useAppStore
 }

@@ -7,7 +7,7 @@ import {
   DownOutlined
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { useStore } from 'stores'
+import { useAppStore } from 'stores';
 import style from './index.module.less'
 import classNames from 'classnames';
 import { home } from 'services';
@@ -24,15 +24,15 @@ interface IHome {
 
 const Home: FC<IHome> = ({history}: IHome) => {
   const [collapsed, setCollapsed] = useState(false)
-  const [userInfo, setUserInfo] = useState<UserInfoType>({
-    userId: 0,
-    avatar: '',
-    userName: '',
-    roleType: 0,
-    permissions: []
-  })
+  // const [userInfo, setUserInfo] = useState<UserInfoType>({
+  //   userId: 0,
+  //   avatar: '',
+  //   userName: '',
+  //   roleType: 0,
+  //   permissions: []
+  // })
   const [selectedIndex, setSelectedIndex] = useState<number>(1)
-  const { loginStore } = useStore()
+  const appStore = useAppStore()
   const { changeLanguage } = useChangeLang();
 
   const toggleCollapsed = () => {
@@ -40,15 +40,15 @@ const Home: FC<IHome> = ({history}: IHome) => {
   };
 
   const initUserInfo = async () => {
-    const userInfoStorage = localStorage.getItem('userInfo');
-    const userInfo = userInfoStorage ? JSON.parse(userInfoStorage) : loginStore.getUserInfo();
-    const { userId } = userInfo
-    const res = await home.menus({params: { userId }});
-    const permissions: string[] = ['homeRoot'];
-    res.data.userMenus.map((item: any)=> permissions.push(item.menuCode));
-    userInfo.permissions = permissions;
-    setUserInfo(userInfo);
-    loginStore.setUserInfo(userInfo);
+    // const userInfoStorage = localStorage.getItem('userInfo');
+    // const userInfo = userInfoStorage ? JSON.parse(userInfoStorage) : loginStore.getUserInfo();
+    // const { userId } = userInfo
+    // const res = await home.menus({params: { userId }});
+    // const permissions: string[] = ['homeRoot'];
+    // res.data.userMenus.map((item: any)=> permissions.push(item.menuCode));
+    // userInfo.permissions = permissions;
+    // setUserInfo(userInfo);
+    // loginStore.setUserInfo(userInfo);
   }
 
 
@@ -60,7 +60,7 @@ const Home: FC<IHome> = ({history}: IHome) => {
   )
 
   const logout = () => {
-    loginStore.toggleLogin(false)
+    // loginStore.toggleLogin(false)
     history.push('/login')
   }
 
@@ -75,8 +75,9 @@ const Home: FC<IHome> = ({history}: IHome) => {
   const login = (
     <Dropdown overlay={headMenu} trigger={['click']} arrow>
       <div className={style['avatar-wrapper']}>
-        <img src={userInfo.avatar} alt=""
-          className={style['avatar']}/>
+        {appStore.userInfo.userName}
+        {/* <img src={appStore.userInfo.avatar} alt=""
+          className={style['avatar']}/> */}
         <DownOutlined />
       </div>
     </Dropdown>
@@ -99,7 +100,7 @@ const Home: FC<IHome> = ({history}: IHome) => {
               }
               onClick={() => {
                 changeLanguage(option.lng)
-                loginStore.setLng(option.lng)
+                // loginStore.setLng(option.lng)
                 setSelectedIndex(option.key)
             }}>{option.text}</span>
           </Menu.Item>
@@ -133,7 +134,8 @@ const Home: FC<IHome> = ({history}: IHome) => {
           onClick: toggleCollapsed,
         })}
         {renderTranslation()}
-        {loginStore.isLogin ? login : notLogin}
+        {login}
+        {/* {loginStore.isLogin ? login : notLogin} */}
       </Header>
       <Content
         className={style["site-layout-background"]}
@@ -157,7 +159,7 @@ const Home: FC<IHome> = ({history}: IHome) => {
     <Layout>
       {
         <SideBar menus={baseMenus}
-          permissions={userInfo.permissions}
+          permissions={appStore.permissions}
           collapsed={collapsed}
           history={history}
         />

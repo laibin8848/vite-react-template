@@ -2,9 +2,10 @@ import React, { memo, FC } from "react";
 import { Form, Input, Button, Checkbox } from "antd";
 import classNames from "classnames";
 import { home } from "services";
-import { useStore } from 'stores'
+import { useAppStore } from 'stores';
 import style from './index.module.less';
 import Captcha from "components/Captcha";
+import { doUserLogin } from 'reducer/user'
 
 const layout = {
   labelCol: { span: 6 },
@@ -20,7 +21,7 @@ interface ILogin {
 }
 
 const Login: FC<ILogin> = ({history}: ILogin) => {
-  const { loginStore } = useStore()
+  const appStore = useAppStore()
   const [form] = Form.useForm();
 
   const onFinish = async (values: {
@@ -32,14 +33,13 @@ const Login: FC<ILogin> = ({history}: ILogin) => {
     const data = await home.login(values)
     const { token } = data.data
     const { username, avatar, userId } = data.data.userInfo
-    await loginStore.setUserInfo({
+    appStore.dispatch(doUserLogin({
       userId,
-      roleType: 0,
       username,
       avatar,
-      permissions: []
-    });
-    await loginStore.toggleLogin(true, token)
+      permissions: [],
+      token
+    }));
     await history.push('/dashboard');
   };
 
