@@ -1,7 +1,7 @@
 import React from 'react';
 
-function middlewareLog(lastState, nextState, action, isDev) {
-  if (isDev) {
+function middlewareLog(store, lastState, nextState, action) {
+  if (store.isDev) {
     console.log(
       `%c|------- redux: ${action.type} -------|`,
       `background: rgb(70, 70, 70); color: rgb(240, 235, 200); width:100%;`,

@@ -28,7 +28,7 @@ export const doUserLogout = (): object => {
 
 export const switchLang = (lang: string): object => {
   return {
-    type: 'switch lang' + lang,
+    type: 'switch lang',
     reducer(state: IKeyString) {
       return {...state, 'lang': lang}
     },
