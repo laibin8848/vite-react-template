@@ -16,6 +16,7 @@ import SideBar from 'layout/SideBar'
 import Footer from 'layout/Footer'
 import { useChangeLang } from 'hooks';
 import { baseMenus } from 'components/Router/baseMenus';
+import { doUserLogout, switchLang } from 'reducer/user';
 
 const { Header, Content } = Layout;
 interface IHome {
@@ -44,7 +45,7 @@ const Home: FC<IHome> = ({history}: IHome) => {
     // const userInfoStorage = localStorage.getItem('userInfo');
     // const userInfo = userInfoStorage ? JSON.parse(userInfoStorage) : loginStore.getUserInfo();
     // const { userId } = userInfo
-    // const res = await home.menus({params: { userId }});
+    const res = await home.menus({params: { userId: storeState.userInfo.userId }});
     // const permissions: string[] = ['homeRoot'];
     // res.data.userMenus.map((item: any)=> permissions.push(item.menuCode));
     // userInfo.permissions = permissions;
@@ -60,15 +61,14 @@ const Home: FC<IHome> = ({history}: IHome) => {
     </div>
   )
 
-  const logout = () => {
-    // loginStore.toggleLogin(false)
-    history.push('/login')
-  }
-
   const headMenu = (
     <Menu>
       <Menu.Item key="1">
-        <span onClick={logout}>退出登录</span>
+        <span onClick={
+          ()=> {
+            storeInstance.storer.dispatch(doUserLogout());
+          }
+        }>退出登录</span>
       </Menu.Item>
     </Menu>
   );
@@ -76,9 +76,8 @@ const Home: FC<IHome> = ({history}: IHome) => {
   const login = (
     <Dropdown overlay={headMenu} trigger={['click']} arrow>
       <div className={style['avatar-wrapper']}>
-        {storeState.userInfo.userName}
-        {/* <img src={storeState.userInfo.avatar} alt=""
-          className={style['avatar']}/> */}
+        <img src={storeState.userInfo.avatar} alt=""
+          className={style['avatar']}/>
         <DownOutlined />
       </div>
     </Dropdown>
@@ -101,7 +100,7 @@ const Home: FC<IHome> = ({history}: IHome) => {
               }
               onClick={() => {
                 changeLanguage(option.lng)
-                // loginStore.setLng(option.lng)
+                storeInstance.storer.dispatch(switchLang(option.lng));
                 setSelectedIndex(option.key)
             }}>{option.text}</span>
           </Menu.Item>
@@ -136,7 +135,7 @@ const Home: FC<IHome> = ({history}: IHome) => {
         })}
         {renderTranslation()}
         {login}
-        {/* {storeState.isLogin ? login : notLogin} */}
+        {storeState.isLogin ? login : notLogin}
       </Header>
       <Content
         className={style["site-layout-background"]}

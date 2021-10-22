@@ -5,7 +5,7 @@ import { home } from "services";
 import Store from 'stores';
 import style from './index.module.less';
 import Captcha from "components/Captcha";
-import { doUserLogin } from 'reducer/user'
+import { doUserLogin } from 'reducer/user';
 
 const layout = {
   labelCol: { span: 6 },
@@ -21,7 +21,7 @@ interface ILogin {
 }
 
 const Login: FC<ILogin> = ({history}: ILogin) => {
-  const appStore = Store.getInstance();
+  const storeInstance = Store.getInstance();
   const [form] = Form.useForm();
 
   const onFinish = async (values: {
@@ -33,7 +33,7 @@ const Login: FC<ILogin> = ({history}: ILogin) => {
     const data = await home.login(values)
     const { token } = data.data
     const { username, avatar, userId } = data.data.userInfo
-    appStore.storer.dispatch(doUserLogin({
+    storeInstance.storer.dispatch(doUserLogin({
       userId,
       username,
       avatar,

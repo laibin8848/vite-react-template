@@ -1,4 +1,4 @@
-import { isAuthenticated, authenticateSuccess, logout } from 'utils'
+import { authenticateSuccess, logout } from 'utils'
 
 export const doUserLogin = (userinfo: UserInfoType): object => {
   return {
@@ -6,7 +6,7 @@ export const doUserLogin = (userinfo: UserInfoType): object => {
     reducer(state: IKeyString) {
       localStorage.setItem('userInfo', JSON.stringify(userinfo))
       authenticateSuccess(userinfo.token)
-      return {...state, 'userInfo': userinfo}
+      return {...state, 'userInfo': userinfo, isLogin: true}
     },
   };
 };
@@ -15,8 +15,13 @@ export const doUserLogout = (): object => {
   return {
     type: 'user logout',
     reducer(state: IKeyString) {
-      debugger
       localStorage.setItem('userInfo', JSON.stringify({}))
+      logout()
+      return {...state, 'userInfo': {
+        userId: 0,
+        username: '',
+        avatar: ''
+      }, isLogin: false}
     },
   };
 };
@@ -25,8 +30,7 @@ export const switchLang = (lang: string): object => {
   return {
     type: 'switch lang' + lang,
     reducer(state: IKeyString) {
-      debugger
-      localStorage.setItem('userInfo', JSON.stringify({}))
+      return {...state, 'lang': lang}
     },
   };
 };

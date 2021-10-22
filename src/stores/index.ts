@@ -16,11 +16,12 @@ export default class appStore {
       initialState: {
         userInfo: {
           userId: 0,
-          userName: 'default',
+          username: '',
           avatar: ''
         },
         permissions: [],
-        lang: 'cn'
+        lang: 'cn',
+        isLogin: false
       },
       context: this.contextId
     });
