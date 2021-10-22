@@ -7,7 +7,7 @@ import {
   DownOutlined
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { useAppStore } from 'stores';
+import Store from 'stores';
 import style from './index.module.less'
 import classNames from 'classnames';
 import { home } from 'services';
@@ -32,7 +32,8 @@ const Home: FC<IHome> = ({history}: IHome) => {
   //   permissions: []
   // })
   const [selectedIndex, setSelectedIndex] = useState<number>(1)
-  const appStore = useAppStore()
+  const storeInstance = Store.getInstance();
+  const storeState = storeInstance.getStoreContext()
   const { changeLanguage } = useChangeLang();
 
   const toggleCollapsed = () => {
@@ -75,8 +76,8 @@ const Home: FC<IHome> = ({history}: IHome) => {
   const login = (
     <Dropdown overlay={headMenu} trigger={['click']} arrow>
       <div className={style['avatar-wrapper']}>
-        {appStore.userInfo.userName}
-        {/* <img src={appStore.userInfo.avatar} alt=""
+        {storeState.userInfo.userName}
+        {/* <img src={storeState.userInfo.avatar} alt=""
           className={style['avatar']}/> */}
         <DownOutlined />
       </div>
@@ -135,7 +136,7 @@ const Home: FC<IHome> = ({history}: IHome) => {
         })}
         {renderTranslation()}
         {login}
-        {/* {loginStore.isLogin ? login : notLogin} */}
+        {/* {storeState.isLogin ? login : notLogin} */}
       </Header>
       <Content
         className={style["site-layout-background"]}
@@ -159,7 +160,7 @@ const Home: FC<IHome> = ({history}: IHome) => {
     <Layout>
       {
         <SideBar menus={baseMenus}
-          permissions={appStore.permissions}
+          permissions={storeState.permissions}
           collapsed={collapsed}
           history={history}
         />

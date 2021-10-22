@@ -2,7 +2,7 @@ import React, { memo, FC } from "react";
 import { Form, Input, Button, Checkbox } from "antd";
 import classNames from "classnames";
 import { home } from "services";
-import { useAppStore } from 'stores';
+import Store from 'stores';
 import style from './index.module.less';
 import Captcha from "components/Captcha";
 import { doUserLogin } from 'reducer/user'
@@ -21,7 +21,7 @@ interface ILogin {
 }
 
 const Login: FC<ILogin> = ({history}: ILogin) => {
-  const appStore = useAppStore()
+  const appStore = Store.getInstance();
   const [form] = Form.useForm();
 
   const onFinish = async (values: {
@@ -33,11 +33,10 @@ const Login: FC<ILogin> = ({history}: ILogin) => {
     const data = await home.login(values)
     const { token } = data.data
     const { username, avatar, userId } = data.data.userInfo
-    appStore.dispatch(doUserLogin({
+    appStore.storer.dispatch(doUserLogin({
       userId,
       username,
       avatar,
-      permissions: [],
       token
     }));
     await history.push('/dashboard');

@@ -1,23 +1,40 @@
 import { createContext, useContext } from 'react';
 import miniRedux from 'libs/mini-redux';
-const appStoreContext = createContext();
 
-const Storer = miniRedux({
-  isDev: false,
-  initialState: {
-    userInfo: {
-      userId: 0,
-      userName: 'default',
-      avatar: ''
-    },
-    permissions: [],
-    lang: 'cn'
-  },
-  context: appStoreContext
-});
+export default class appStore {
+  static instance: any;
+  contextId: any;
+  storer: any;
+  Provider: any;
+  getStoreContext: Function;
 
-export const Provider = Storer.Provider;
+  constructor() {
+    console.log('constructor')
+    this.contextId = createContext();
+    const { Provider, store } = miniRedux({
+      isDev: false,
+      initialState: {
+        userInfo: {
+          userId: 0,
+          userName: 'default',
+          avatar: ''
+        },
+        permissions: [],
+        lang: 'cn'
+      },
+      context: this.contextId
+    });
+    this.Provider = Provider;
+    this.storer = store;
+    this.getStoreContext = ()=> {
+      return useContext(this.contextId)
+    };
+  }
 
-export const useAppStore = () => {
-  return useContext(appStoreContext);
+  public static getInstance(): any {
+    if(!this.instance) {
+      this.instance = new appStore();
+    }
+    return this.instance;
+  }
 }

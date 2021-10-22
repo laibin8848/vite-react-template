@@ -4,8 +4,9 @@ export const doUserLogin = (userinfo: UserInfoType): object => {
   return {
     type: 'user login',
     reducer(state: IKeyString) {
-      debugger
       localStorage.setItem('userInfo', JSON.stringify(userinfo))
+      authenticateSuccess(userinfo.token)
+      return {...state, 'userInfo': userinfo}
     },
   };
 };

@@ -3,15 +3,16 @@ import { Route, Switch, HashRouter } from 'react-router-dom';
 import { Spin, Space } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import './App.css';
-import { Provider } from 'stores';
+import Store from 'stores';
 import Login from './pages/Login';
 import Home from './pages/Home';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24, }} spin />;
 
 const App: FC = () => {
+  const appStore = Store.getInstance()
   return (
-      <Provider>
+      <appStore.Provider>
         <HashRouter>
           <Suspense fallback={
             <Space size="large" className="loading flex-all-center">
@@ -24,7 +25,7 @@ const App: FC = () => {
             </Switch>
           </Suspense>
         </HashRouter>
-      </Provider>
+      </appStore.Provider>
   );
 };
 
