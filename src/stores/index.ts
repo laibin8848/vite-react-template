@@ -12,7 +12,7 @@ export default class appStore {
     console.log('constructor')
     this.contextId = createContext();
     const { Provider, store } = miniRedux({
-      isDev: false,
+      isDev: true,
       initialState: {
         userInfo: {
           userId: 0,

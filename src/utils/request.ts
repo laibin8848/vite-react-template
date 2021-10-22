@@ -21,6 +21,9 @@ export default class API implements IAPI {
 
   private handleInterceptors() {
     this.api && this.api.interceptors.request.use((config: AxiosRequestConfig) => {
+      config['headers'] = {
+        'x-access-token': isAuthenticated()
+      }
       return config
     }, (err: AxiosError) => {
       return Promise.reject(err);
@@ -62,8 +65,5 @@ export const mainAPI = new API({
 }).getInstance();
 
 export const RequestService = new API({
-  baseURL: '',
-  headers: {
-    'x-access-token': isAuthenticated()
-  }
+  baseURL: ''
 }).getInstance();

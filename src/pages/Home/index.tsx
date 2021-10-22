@@ -16,7 +16,7 @@ import SideBar from 'layout/SideBar'
 import Footer from 'layout/Footer'
 import { useChangeLang } from 'hooks';
 import { baseMenus } from 'components/Router/baseMenus';
-import { doUserLogout, switchLang } from 'reducer/user';
+import { doUserLogout, switchLang, setPermissions } from 'reducer/user';
 
 const { Header, Content } = Layout;
 interface IHome {
@@ -24,33 +24,20 @@ interface IHome {
 }
 
 const Home: FC<IHome> = ({history}: IHome) => {
-  const [collapsed, setCollapsed] = useState(false)
-  // const [userInfo, setUserInfo] = useState<UserInfoType>({
-  //   userId: 0,
-  //   avatar: '',
-  //   userName: '',
-  //   roleType: 0,
-  //   permissions: []
-  // })
-  const [selectedIndex, setSelectedIndex] = useState<number>(1)
+  const [collapsed, setCollapsed] = useState(false);
   const storeInstance = Store.getInstance();
-  const storeState = storeInstance.getStoreContext()
+  const storeState = storeInstance.getStoreContext();
   const { changeLanguage } = useChangeLang();
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
 
-  const initUserInfo = async () => {
-    // const userInfoStorage = localStorage.getItem('userInfo');
-    // const userInfo = userInfoStorage ? JSON.parse(userInfoStorage) : loginStore.getUserInfo();
-    // const { userId } = userInfo
+  const getPermissions = async () => {
     const res = await home.menus({params: { userId: storeState.userInfo.userId }});
-    // const permissions: string[] = ['homeRoot'];
-    // res.data.userMenus.map((item: any)=> permissions.push(item.menuCode));
-    // userInfo.permissions = permissions;
-    // setUserInfo(userInfo);
-    // loginStore.setUserInfo(userInfo);
+    const permissions: string[] = ['homeRoot'];
+    res.data.userMenus.map((item: any)=> permissions.push(item.menuCode));
+    storeInstance.storer.dispatch(setPermissions(permissions));
   }
 
 
@@ -94,14 +81,13 @@ const Home: FC<IHome> = ({history}: IHome) => {
           <Menu.Item key={option.key}>
             <span
               className={
-                selectedIndex === option.key
+                storeState.lang === option.lng
                 ? style['is-translationOpt-selected']
                 : ''
               }
               onClick={() => {
                 changeLanguage(option.lng)
                 storeInstance.storer.dispatch(switchLang(option.lng));
-                setSelectedIndex(option.key)
             }}>{option.text}</span>
           </Menu.Item>
         ))
@@ -152,8 +138,8 @@ const Home: FC<IHome> = ({history}: IHome) => {
   )
 
   useEffect(() => {
-    initUserInfo()
-  }, [])
+    getPermissions();
+  }, []);
 
   return (
     <Layout>

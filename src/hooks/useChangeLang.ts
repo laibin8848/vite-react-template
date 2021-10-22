@@ -6,7 +6,7 @@ const useChangeLang = () => {
 
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
-    message.success(t('lang.changeLangSuccess'))
+    message.success(t('lng.changeLangSuccess'))
   };
 
   return {

@@ -34,3 +34,12 @@ export const switchLang = (lang: string): object => {
     },
   };
 };
+
+export const setPermissions = (permissions: string[]): object => {
+  return {
+    type: 'set permissions',
+    reducer(state: IKeyString) {
+      return {...state, 'permissions': permissions}
+    },
+  };
+};
