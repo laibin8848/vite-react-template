@@ -25,4 +25,16 @@ export default defineConfig({
   plugins: [
     reactRefresh()
   ],
+  server: {
+    host: '0.0.0.0',
+    open: true,
+    cors: true,
+    port: 3000,
+    proxy: {
+      '/admin-backend': {
+          target: 'http://10.16.153.37:32008',
+          changeOrigin: true
+      }
+    }
+  }
 })
