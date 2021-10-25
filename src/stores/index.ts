@@ -9,7 +9,6 @@ export default class appStore {
   getStoreContext: Function;
 
   constructor() {
-    console.log('constructor')
     this.contextId = createContext();
     const { Provider, store } = miniRedux({
       isDev: true,
