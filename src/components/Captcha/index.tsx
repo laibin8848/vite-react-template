@@ -22,7 +22,6 @@ const Captcha: React.FC<ICaptcha> = ({
   }, [])
 
   return (
-    <img onClick={getCaptcha} style={{height: '30px', width: '100px', marginLeft: '4px', cursor: 'pointer'}} src={captcha} />
   )
 }
 
